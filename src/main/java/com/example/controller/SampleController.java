@@ -10,8 +10,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.SimpleDateFormat;
@@ -76,8 +78,9 @@ public class SampleController {
     }
 
     @GetMapping("/ex03")
-    public String ex03(TodoDTO todo) {
+    public String ex03(TodoDTO todo, Model model) {
         log.info("todo: " + todo);
+        model.addAttribute("todo", todo);
         return "ex03";
     }
 
@@ -117,6 +120,22 @@ public class SampleController {
 
         return new ResponseEntity<>(msg, header, HttpStatus.OK);
     }
+
+    @GetMapping("/exUpload")
+    public void exUpload() {
+        log.info("/exUpload....");
+    }
+
+    @PostMapping("/exUploadPost")
+    public void exUploadPost(ArrayList<MultipartFile> files) {
+        files.forEach(file -> {
+            log.info("---------------------");
+            log.info("name: " + file.getOriginalFilename());
+            log.info("size: " + file.getSize());
+        });
+    }
+
+
 
 
 }
